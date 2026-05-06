@@ -1,34 +1,4 @@
-# Контрольная работа №4. Технологии разработки серверных приложений
-
-## Структура проекта
-
-```
-work4/
- app/
-   main.py          # Основное приложение FastAPI
-   database.py      # Настройка SQLAlchemy
-   models.py        # Модель Product (SQLAlchemy)
-   schemas.py       # Pydantic-схемы
-   exceptions.py    # Пользовательские исключения (Task 10.1)
- alembic/
-   env.py
-   versions/
-     001_create_products_table.py       # Начальная миграция
-     002_add_description_to_products.py # Добавление description
- tests/
-   test_custom_exceptions.py  # Тесты Task 10.1
-   test_validation.py         # Тесты Task 10.2
-   test_users_sync.py         # Синхронные тесты Task 11.1
-   test_users_async.py        # Асинхронные тесты Task 11.2
- alembic.ini
- pytest.ini
- requirements.txt
- seed.py              # Скрипт для вставки начальных данных
- .env.example
- README.md
-```
-
-## Установка и запуск
+ ## Установка и запуск
 
 ```bash
 pip install -r requirements.txt
@@ -37,45 +7,8 @@ python seed.py
 uvicorn app.main:app --reload
 ```
 
-Документация API: http://127.0.0.1:8000/docs
-
 ## Запуск тестов
 
 ```bash
 python -m pytest tests/ -v
 ```
-
-## Проверка функциональности
-
-### Task 9.1 — Alembic миграции
-
-- Миграция 001: создание таблицы products (id, title, price, count)
-- Миграция 002: добавление поля description (NOT NULL)
-- seed.py вставляет 2 записи в таблицу
-
-### Task 10.1 — Пользовательская обработка ошибок
-
-- GET /check-condition/0 — CustomExceptionA (400)
-- GET /items/999 — CustomExceptionB (404)
-- Модели ответов через Pydantic ErrorResponse
-
-### Task 10.2 — Валидация данных
-
-- POST /validate-user — валидация User (username, age>18, email, password 8-16 символов)
-- Кастомный обработчик RequestValidationError
-
-### Task 11.1 — Синхронные тесты (TestClient)
-
-- POST /users — создание пользователя (201)
-- GET /users/{id} — получение (200) / не найден (404)
-- DELETE /users/{id} — удаление (204) / повторное удаление (404)
-
-### Task 11.2 — Асинхронные тесты (httpx + Faker)
-
-- pytest-asyncio + httpx.AsyncClient + ASGITransport
-- Faker для генерации данных
-- Изоляция состояния между тестами
-
-## Переменные окружения
-
-См. `.env.example`. По умолчанию: `sqlite:///./app.db`.
